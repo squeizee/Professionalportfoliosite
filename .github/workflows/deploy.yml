@@ -2,56 +2,40 @@ name: Deploy Vite site to GitHub Pages
 
 on:
   push:
-    branches: [main]
+    branches: [main]  # main branch'e her push'ta tetiklenir
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Repo'yu checkout et
+      # 1️⃣ Checkout repo
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           persist-credentials: false
 
-      # 2️⃣ Node kurulumu
+      # 2️⃣ Setup Node
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      # 3️⃣ Bağımlılıkları yükle
+      # 3️⃣ Install dependencies
       - name: Install dependencies
         run: npm install
 
-      # 4️⃣ Base path’i otomatik ayarla
-      - name: Set Vite base path dynamically
-        run: |
-          cd $GITHUB_WORKSPACE
-          REPO_NAME=${GITHUB_REPOSITORY##*/}
-          echo "Setting Vite base path to /$REPO_NAME/"
-      
-          if grep -q "base:" vite.config.js; then
-            sed -i "s|base:.*|base: \"/$REPO_NAME/\",|" vite.config.ts
-          else
-            sed -i "1s|{|\{ base: \"/$REPO_NAME/\",|" vite.config.ts
-          fi
-
-      # 5️⃣ Build işlemi
+      # 4️⃣ Build project with dynamic REPO_NAME
       - name: Build project
         run: |
-          echo "⚡ Running build..."
+          echo "Building project with REPO_NAME=$REPO_NAME"
           npm run build
-          echo "📂 Listing build/ folder contents..."
-          if [ -d "build" ]; then
-            ls -la build
-          else
-            echo "❌ build/ folder not found!"
-            exit 1
-          fi
+          echo "Listing build folder contents:"
+          ls -la build
+        env:
+          REPO_NAME: ${{ github.repository_name }}
 
-      # 6️⃣ Deploy
+      # 5️⃣ Deploy to gh-pages
       - name: Deploy to GitHub Pages
         run: |
           cd build
