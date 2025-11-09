@@ -3,7 +3,11 @@
   import react from '@vitejs/plugin-react-swc';
   import path from 'path';
 
+  // REPO_NAME environment variable will be passed by GitHub Actions
+  const repoName = process.env.REPO_NAME || ''
+
   export default defineConfig({
+    base: repoName ? `/${repoName}/` : '/', // automatic base
     plugins: [react()],
     resolve: {
       extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
