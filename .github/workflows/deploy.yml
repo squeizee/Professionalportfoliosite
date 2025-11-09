@@ -33,9 +33,9 @@ jobs:
           echo "Setting Vite base path to /$REPO_NAME/"
       
           if grep -q "base:" vite.config.js; then
-            sed -i "s|base:.*|base: \"/$REPO_NAME/\",|" vite.config.js
+            sed -i "s|base:.*|base: \"/$REPO_NAME/\",|" vite.config.ts
           else
-            sed -i "1s|{|\{ base: \"/$REPO_NAME/\",|" vite.config.js
+            sed -i "1s|{|\{ base: \"/$REPO_NAME/\",|" vite.config.ts
           fi
 
       # 5️⃣ Build işlemi
