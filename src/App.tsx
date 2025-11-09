@@ -2,6 +2,7 @@ import { Github, Linkedin, Mail } from "lucide-react";
 import { Badge } from "./components/ui/badge";
 import { Button } from "./components/ui/button";
 import { ImageWithFallback } from "./components/figma/ImageWithFallback";
+import { MiniGame } from "./components/MiniGame";
 
 export default function App() {
   const skills = [
@@ -129,6 +130,9 @@ export default function App() {
           </div>
         </div>
       </section>
+
+      {/* Mini Game */}
+      <MiniGame />
 
       {/* Contact */}
       <section className="bg-slate-900 py-20">
