@@ -28,10 +28,10 @@ jobs:
       # 4️⃣ Base path’i otomatik ayarla
       - name: Set Vite base path dynamically
         run: |
+          cd $GITHUB_WORKSPACE
           REPO_NAME=${GITHUB_REPOSITORY##*/}
           echo "Setting Vite base path to /$REPO_NAME/"
       
-          # Eğer base satırı yoksa ekle
           if grep -q "base:" vite.config.js; then
             sed -i "s|base:.*|base: \"/$REPO_NAME/\",|" vite.config.js
           else
