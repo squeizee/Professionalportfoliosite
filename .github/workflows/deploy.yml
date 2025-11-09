@@ -9,19 +9,30 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # 1️⃣ Repo'yu checkout et
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           persist-credentials: false
 
+      # 2️⃣ Node kurulumu
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
+      # 3️⃣ Bağımlılıkları yükle
       - name: Install dependencies
         run: npm install
 
+      # 4️⃣ Base path’i otomatik ayarla
+      - name: Set Vite base path dynamically
+        run: |
+          REPO_NAME=${GITHUB_REPOSITORY##*/}
+          echo "Setting Vite base path to /$REPO_NAME/"
+          sed -i "s|base:.*|base: \"/$REPO_NAME/\",|" vite.config.js
+
+      # 5️⃣ Build işlemi
       - name: Build project
         run: |
           echo "⚡ Running build..."
@@ -34,6 +45,7 @@ jobs:
             exit 1
           fi
 
+      # 6️⃣ Deploy
       - name: Deploy to GitHub Pages
         run: |
           cd build
