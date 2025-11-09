@@ -2,7 +2,7 @@ name: Deploy Vite site to GitHub Pages
 
 on:
   push:
-    branches: [main]  # main branch'e her push'ta tetiklenir
+    branches: [main]
 
 jobs:
   deploy:
@@ -25,15 +25,13 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # 4️⃣ Build project with dynamic REPO_NAME
+      # 4️⃣ Build project
       - name: Build project
         run: |
-          echo "Building project with REPO_NAME=$REPO_NAME"
+          echo "Building project..."
           npm run build
           echo "Listing build folder contents:"
           ls -la build
-        env:
-          REPO_NAME: ${{ github.repository_name }}
 
       # 5️⃣ Deploy to gh-pages
       - name: Deploy to GitHub Pages
